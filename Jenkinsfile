@@ -21,8 +21,8 @@ pipeline {
                         def ec2Info = bat script: "aws ec2 start-instances --region ${env.AWS_REGION} --instance-ids ${env.INSTANCE_ID} --query 'Instances[0].PublicDnsName' --output text", returnStatus: true
                         if (ec2Info == 0) {
                             // Set the public DNS as an environment variable for use in the next stage
-                            bat(script: "aws ec2 describe-instances --region ${env.AWS_REGION} --instance-ids ${env.INSTANCE_ID} --output text > output.txt")
-                            env.EC2_PUBLIC_DNS = readFile('output.txt').trim()
+                            bat(script: "aws ec2 describe-instances --region ${env.AWS_REGION} --instance-ids ${env.INSTANCE_ID} --output json > output.json")
+                            env.EC2_PUBLIC_DNS = readFile('output.json').trim()
                             echo "EC2 Instance Public DNS: ${EC2_PUBLIC_DNS}"
                         } else {
                             error "Failed to start EC2 instance"
