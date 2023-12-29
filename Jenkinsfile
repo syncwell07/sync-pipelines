@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Start EC2 Instance') {
             steps {
-                withCredentials([string(credentialsId: 'syncwell-aws', variable: 'AWS_CREDENTIALS')]) {
+                withCredentials([string(credentialsId: 'AKIATWI5MRG7JUGMX7XX', variable: 'AWS_CREDENTIALS')]) {
                     script {
                         bat "\"C:\\Program Files\\Amazon\\AWSCLIV2\\aws.exe\" ec2 start-instances --region ${env.AWS_REGION} --instance-ids ${env.INSTANCE_ID}"
                     }
