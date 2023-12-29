@@ -3,10 +3,11 @@ pipeline {
     agent any
 
     environment {
-        INSTANCE_ID = 'i-04b3b479c5a9940f4'
+        INSTANCE_ID = 'i-057465c802925c0ef'
         AWS_REGION = 'ap-south-1'
-        EC2_USERNAME = 'ec2-user'  // Replace with your EC2 instance's username
+        EC2_USERNAME = 'ubuntu'  // Replace with your EC2 instance's username
         PPK_CREDENTIALS_ID = 'risk-ppk-file'
+        SSH_CREDENTIALS_ID = 'sync-ssh'
     }
 
     stages {
@@ -40,9 +41,7 @@ pipeline {
             steps {
                 script {
                     // Use the 'withCredentials' step to run commands on the EC2 instance
-                    withCredentials([file(credentialsId: env.PPK_CREDENTIALS_ID, variable: 'PPK_FILE')]) {
-                        bat "plink.exe -i ${env.PPK_FILE} -l ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
-                    }
+                    sh "ssh -o StrictHostKeyChecking=no -i ${env.SSH_CREDENTIALS_ID} ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
                 }
             }
         }
