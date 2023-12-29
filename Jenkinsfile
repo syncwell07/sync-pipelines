@@ -1,16 +1,20 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Run CMD Command') {
-            steps {
-                script {
-                    // Replace 'your-cmd-command' with your actual CMD command
-                    def cmdCommand = 'aws ec2 start-instances --region ap-south-1 --instance-ids i-04b3b479c5a9940f4'
+    environment {
+        INSTANCE_ID = 'i-04b3b479c5a9940f4'
+    }
 
-                    // Run the CMD command using the 'bat' step
-                    bat cmdCommand
-                }
+    stages {
+        stage('Start EC2 Instance') {
+            steps {
+                    script {
+                        bat """
+                        set AWS_ACCESS_KEY_ID=AKIATWI5MRG7JUGMX7XX
+                        set AWS_SECRET_ACCESS_KEY=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
+                        aws ec2 start-instances --region ap-south-1 --instance-ids %INSTANCE_ID%
+                        """
+                    }
             }
         }
     }
