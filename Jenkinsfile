@@ -41,7 +41,7 @@ pipeline {
                 script {
                     // Use the 'withCredentials' step to run commands on the EC2 instance
                     withCredentials([file(credentialsId: env.PPK_CREDENTIALS_ID, variable: 'PPK_FILE')]) {
-                        bat "plink.exe -i ${env.PPK_FILE} -l ec2-user@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
+                        bat "plink.exe -i ${env.PPK_FILE} -l ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
                     }
                 }
             }
