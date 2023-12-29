@@ -11,7 +11,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'risk-aws', variable: 'AWS_CREDENTIALS')]) {
                     script {
                         bat """
-			echo AWS_CREDENTIALS
+			echo %AWS_CREDENTIALS%
                         set AWS_ACCESS_KEY_ID=!AWS_CREDENTIALS.split(':')[0]!
                         set AWS_SECRET_ACCESS_KEY=!AWS_CREDENTIALS.split(':')[1]!
                         aws ec2 start-instances --region ap-south-1 --instance-ids %INSTANCE_ID%
