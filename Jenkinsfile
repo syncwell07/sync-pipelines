@@ -11,9 +11,10 @@ pipeline {
     stages {
         stage('Start EC2 Instance') {
             steps {
-                script {
-                    // Use the sh step to run shell commands
-                  bat "${env.AWS_CLI_PATH} ec2 start-instances --region ${env.AWS_REGION} --instance-ids ${env.INSTANCE_ID}"
+                withCredentials([string(credentialsId: 'syncwell-jenkins', variable: 'AWS_CREDENTIALS')]) {
+                    script {
+                        bat "\"C:\\Program Files\\Amazon\\AWSCLIV2\\aws.exe\" ec2 start-instances --region ${env.AWS_REGION} --instance-ids ${env.INSTANCE_ID}"
+                    }
                 }
             }
         }
