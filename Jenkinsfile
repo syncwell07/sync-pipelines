@@ -40,11 +40,7 @@ pipeline {
         stage('Run Commands on EC2 Instance') {
             steps {
                 script {
-                    // Use the 'withCredentials' step to run commands on the EC2 instance
-                    sshagent(credentials: [env.SSH_CREDENTIALS_ID]) {
-                        // Now you can use ssh commands securely
-                        bat "ssh -o StrictHostKeyChecking=no ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
-                    }
+                        bat(script:"ssh -i "C:\\Users\\Rakhi\\Downloads\\sync-test.pem" ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'")
                 }
             }
         }
