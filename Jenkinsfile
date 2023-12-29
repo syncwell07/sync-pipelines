@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     // Use the sh step to run shell commands
-                    aws ec2 start-instances --region $AWS_REGION --instance-ids $INSTANCE_ID
+                   bat "aws ec2 start-instances --region ${env.AWS_REGION} --instance-ids ${env.INSTANCE_ID}"
                 }
             }
         }
