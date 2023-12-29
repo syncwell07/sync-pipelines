@@ -3,7 +3,9 @@ pipeline {
 
     environment {
         INSTANCE_ID = 'i-04b3b479c5a9940f4'
-	    AWS_REGION = 'ap-south-1'
+        AWS_REGION = 'ap-south-1'
+        EC2_USERNAME = 'ec2-user'  // Replace with your EC2 instance's username
+        SSH_CREDENTIALS_ID = 'risk-ppk-file'
     }
 
     stages {
@@ -20,13 +22,24 @@ pipeline {
                         if (ec2Info == 0) {
                             // Set the public DNS as an environment variable for use in the next stage
                             env.EC2_PUBLIC_DNS = bat(script: "aws ec2 describe-instances --region ${env.AWS_REGION} --instance-ids ${env.INSTANCE_ID} --query 'Reservations[0].Instances[0].PublicDnsName' --output text", returnStdout: true).trim()
-                            echo %EC2_PUBLIC_DNS%
-			            } else {
+                        } else {
                             error "Failed to start EC2 instance"
                         }
                     }
                 }
             }
         }
-	}
+
+        stage('Run Commands on EC2 Instance') {
+            steps {
+                script {
+                    // Use the 'sshagent' step to run commands on the EC2 instance
+                    sshagent(['your-ssh-credentials-id']) {
+                        // Use the dynamically obtained EC2 public DNS
+                        bat "ssh -i ${SSH_CREDENTIALS_ID} -o StrictHostKeyChecking=no ${env.EC2_USERNAME}@${env.EC2_PUBLIC_DNS} 'your-command'"
+                    }
+                }
+            }
+        }
+    }
 }
