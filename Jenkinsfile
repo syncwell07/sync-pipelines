@@ -8,14 +8,15 @@ pipeline {
     stages {
         stage('Start EC2 Instance') {
             steps {
+                withCredentials([string(credentialsId: 'your-aws-credentials-id', variable: 'AWS_CREDENTIALS')]) {
                     script {
                         bat """
-                        set AWS_ACCESS_KEY_ID=AKIATWI5MRG7JUGMX7XX
-                        set AWS_SECRET_ACCESS_KEY=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
-                        aws ec2 start-instances --region ap-south-1 --instance-ids %INSTANCE_ID%
+                        set AWS_ACCESS_KEY_ID=!AWS_CREDENTIALS.split(':')[0]!
+                        set AWS_SECRET_ACCESS_KEY=!AWS_CREDENTIALS.split(':')[1]!
+                        aws ec2 start-instances --region your-aws-region --instance-ids %INSTANCE_ID%
                         """
                     }
+                }
             }
         }
-    }
 }
