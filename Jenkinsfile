@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     // Use the 'sshagent' step to run commands on the EC2 instance
-                    sshagent(['your-ssh-credentials-id']) {
+                    sshagent(['risk-ppk-file']) {
                         // Use the dynamically obtained EC2 public DNS
                         bat "ssh -i ${SSH_CREDENTIALS_ID} -o StrictHostKeyChecking=no ${env.EC2_USERNAME}@${env.EC2_PUBLIC_DNS} 'your-command'"
                     }
