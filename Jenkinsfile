@@ -25,7 +25,7 @@ pipeline {
                             def output = readFile('output.json').trim()
                             def jsonSlurper = new JsonSlurper()
                             def jsonObject = jsonSlurper.parseText(output)
-                            env.EC2_PUBLIC_DNS = jsonObject.Reservations.[0].Instances[0].PublicDnsName
+                            env.EC2_PUBLIC_DNS = jsonObject.Reservations[0].Instances[0].PublicDnsName
                             echo "EC2 Instance Public DNS: ${EC2_PUBLIC_DNS}"
                         } else {
                             error "Failed to start EC2 instance"
