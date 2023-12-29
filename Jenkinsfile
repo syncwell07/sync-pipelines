@@ -5,7 +5,7 @@ pipeline {
         INSTANCE_ID = 'i-04b3b479c5a9940f4'
         AWS_REGION = 'ap-south-1'
         EC2_USERNAME = 'ec2-user'  // Replace with your EC2 instance's username
-        SSH_CREDENTIALS_ID = 'risk-ppk-file'
+        PPK_CREDENTIALS_ID = 'risk-ppk-file'
     }
 
     stages {
@@ -33,10 +33,9 @@ pipeline {
         stage('Run Commands on EC2 Instance') {
             steps {
                 script {
-                    // Use the 'sshagent' step to run commands on the EC2 instance
-                    sshagent(['risk-ppk-file']) {
-                        // Use the dynamically obtained EC2 public DNS
-                        bat "ssh -i ${SSH_CREDENTIALS_ID} -o StrictHostKeyChecking=no ${env.EC2_USERNAME}@${env.EC2_PUBLIC_DNS} 'your-command'"
+                    // Use the 'withCredentials' step to run commands on the EC2 instance
+                    withCredentials([file(credentialsId: env.PPK_CREDENTIALS_ID, variable: 'PPK_FILE')]) {
+                        bat "plink.exe -i ${env.PPK_FILE} -l ${env.EC2_USERNAME} ${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
                     }
                 }
             }
