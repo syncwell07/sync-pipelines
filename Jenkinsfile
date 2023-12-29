@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Start EC2 Instance') {
             steps {
-                withCredentials([string(credentialsId: 'risk-aws', variable: 'AWS_CREDENTIALS')]) {
+               withCredentials([awsCredentials(credentialsId: 'risk-aws', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY', regionVariable: 'AWS_DEFAULT_REGION')]) {
                     script {
                         bat """
 			echo %AWS_CREDENTIALS%
