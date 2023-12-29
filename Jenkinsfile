@@ -4,7 +4,8 @@ pipeline {
     environment {
         AWS_REGION = 'ap-south-1'
         INSTANCE_ID = 'i-04b3b479c5a9940f4'
-        AWS_CLI_PATH = 'C:\Program Files\Amazon\AWSCLIV2\aws.exe' 
+        AWS_CLI_PATH = "C:\\Program Files\\Amazon\\AWSCLIV2\\aws.exe"
+ 
     }
 
     stages {
