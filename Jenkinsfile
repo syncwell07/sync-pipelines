@@ -46,7 +46,7 @@ pipeline {
                         '
                     """
                         // Run the SSH command on the remote host
-                        bat(script:"ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-web.pem' ubuntu@${env.EC2_PUBLIC_DNS} docker ps", returnStatus: true)
+                        bat(script:"ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-web.pem' ubuntu@${env.EC2_PUBLIC_DNS} docker run --name risklab-ui -p 80:80 -d risklab-ui-test", returnStatus: true)
                 }
             }
         }
