@@ -1,4 +1,4 @@
-psimport groovy.json.JsonSlurper
+import groovy.json.JsonSlurper
 pipeline {
     agent any
 
