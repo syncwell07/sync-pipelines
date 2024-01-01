@@ -42,7 +42,7 @@ pipeline {
                 script {
                         def command = "ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-test.pem' ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
                         // Run the SSH command on the remote host
-                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\risktest.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'", returnStatus: true)
+                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\risktest.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'ifconfig'", returnStatus: true)
                         echo "Command result: ${result}"
                         // Check if the command was successful
                         if (result == 0) {
