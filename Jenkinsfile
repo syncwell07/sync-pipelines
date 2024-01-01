@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        INSTANCE_ID = 'i-057465c802925c0ef'
+        INSTANCE_ID = 'i-04b3b479c5a9940f4'
         AWS_REGION = 'ap-south-1'
         EC2_USERNAME = 'ubuntu'  // Replace with your EC2 instance's username
         PPK_CREDENTIALS_ID = 'risk-ppk-file'
@@ -12,6 +12,9 @@ pipeline {
 
     stages {
         stage('Start EC2 Instance') {
+            options {
+                timeout(time: 2, unit: 'MINUTES') // Set a timeout for the first stage
+            }
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
@@ -40,9 +43,9 @@ pipeline {
         stage('Run Commands on EC2 Instance') {
             steps {
                 script {
-                        def command = "ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-test.pem' ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
+                        def command = "ssh -i 'C:\\Users\\Rakhi\\Downloads\\syncwell-web.pem' ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
                         // Run the SSH command on the remote host
-                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\risktest.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'ifconfig'", returnStatus: true)
+                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'", returnStatus: true)
                 }
             }
         }
