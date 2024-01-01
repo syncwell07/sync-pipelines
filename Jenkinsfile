@@ -40,7 +40,7 @@ pipeline {
         stage('Run Commands on EC2 Instance') {
             steps {
                 script {
-                         def result = bat(script:"ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-test.pem' ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps' --output text > result.txt", returnStdout: true)
+                         def result = bat(script:"ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-test.pem' ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps' --output text > result.txt", returnStatus: true)
                          echo "Command result : ${result}"
                 }
             }
