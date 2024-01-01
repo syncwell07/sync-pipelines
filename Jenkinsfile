@@ -46,7 +46,8 @@ pipeline {
                         '
                     """
                         // Run the SSH command on the remote host
-                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'docker ps'", returnStatus: true)
+                        bat(script:"ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-web.pem' ubuntu@${env.EC2_PUBLIC_DNS} docker ps
+", returnStatus: true)
                 }
             }
         }
