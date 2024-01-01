@@ -12,9 +12,6 @@ pipeline {
 
     stages {
         stage('Start EC2 Instance') {
-            options {
-                timeout(time: 2, unit: 'MINUTES') // Set a timeout for the first stage
-            }
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
@@ -36,6 +33,14 @@ pipeline {
                             error "Failed to start EC2 instance"
                         }
                     }
+                }
+            }
+        }
+        stage('Delay Before Run Commands on EC2 Instance') {
+            steps {
+                script {
+                    echo "Sleeping for 2 minutes..."
+                    sleep(time: 2, unit: 'MINUTES')
                 }
             }
         }
