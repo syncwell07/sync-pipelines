@@ -48,10 +48,10 @@ pipeline {
         stage('Run Commands on EC2 Instance') {
             steps {
                 script {
-                        def command = "'
-                                        sudo docker ps
-                                        sudo docker ps -aq | xargs docker stop | xargs docker rm
-                                        '"
+                         def command = """
+        sudo docker ps
+        sudo docker ps -aq | xargs docker stop | xargs docker rm
+    """
                         // Run the SSH command on the remote host
                         bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} ${command}", returnStatus: true)
                 }
