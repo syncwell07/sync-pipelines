@@ -39,8 +39,8 @@ pipeline {
         stage('Delay Before Run Commands on EC2 Instance') {
             steps {
                 script {
-                    echo "Sleeping for 2 minutes..."
-                    sleep(time: 2, unit: 'MINUTES')
+                    echo "Sleeping for 4 minutes..."
+                    sleep(time: 4, unit: 'MINUTES')
                 }
             }
         }
@@ -48,9 +48,12 @@ pipeline {
         stage('Run Commands on EC2 Instance') {
             steps {
                 script {
-                        def command = "ssh -i 'C:\\Users\\Rakhi\\Downloads\\syncwell-web.pem' ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'"
+                        def command = '
+                                        sudo docker ps
+                                        sudo docker ps -aq | xargs docker stop | xargs docker rm
+                                        '
                         // Run the SSH command on the remote host
-                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'", returnStatus: true)
+                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} ${command}", returnStatus: true)
                 }
             }
         }
