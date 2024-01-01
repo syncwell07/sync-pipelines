@@ -1,4 +1,4 @@
-import groovy.json.JsonSlurper
+psimport groovy.json.JsonSlurper
 pipeline {
     agent any
 
@@ -46,7 +46,7 @@ pipeline {
                         '
                     """
                         // Run the SSH command on the remote host
-                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'ifconfig'", returnStatus: true)
+                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'docker ps'", returnStatus: true)
                 }
             }
         }
