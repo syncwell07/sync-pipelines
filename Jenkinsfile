@@ -41,11 +41,12 @@ pipeline {
             steps {
                 script {
                          def command = """
-        sudo docker ps
-        sudo docker ps -aq | xargs docker stop | xargs docker rm
-    """
+                        ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-test.pem' ubuntu@${env.EC2_PUBLIC_DNS} '
+                            sudo docker ps
+                        '
+                    """
                         // Run the SSH command on the remote host
-                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} 'sudo docker ps'", returnStatus: true)
+                        bat(script:"echo y | plink.exe -i \"C:\\Users\\Rakhi\\Downloads\\syncwell-web.ppk\" ubuntu@${env.EC2_PUBLIC_DNS} ${command}", returnStatus: true)
                 }
             }
         }
