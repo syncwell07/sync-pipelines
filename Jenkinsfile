@@ -46,7 +46,7 @@ pipeline {
                     credentialsId: 'risk-aws'
                 ]]) {
                     script {
-                        bat script: 'aws ssm send-command --instance-ids "i-002953cac36e74bd0" --region "ap-south-1" --document-name "AWS-RunShellScript" --parameters commands=["cd risklab-ui","git pull"] --output text', returnStatus: true
+                        bat script: 'aws ssm send-command --instance-ids "i-002953cac36e74bd0" --region "ap-south-1" --document-name "AWS-RunShellScript" --parameters commands=["cd risklab-ui","git pull","sudo docker build -t risklab-ui-test .","sudo docker run --name risklab-ui-test -p 80:80 -d risklab-ui-test"] --output text', returnStatus: true
                     }
                 }
             }
