@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        INSTANCE_ID = 'i-04b3b479c5a9940f4'
+        INSTANCE_ID = 'i-002953cac36e74bd0'
         AWS_REGION = 'ap-south-1'
         EC2_USERNAME = 'ubuntu'  // Replace with your EC2 instance's username
         PPK_CREDENTIALS_ID = 'risk-ppk-file'
@@ -36,19 +36,22 @@ pipeline {
                 }
             }
         }
-
-        stage('Run Commands on EC2 Instance') {
+        
+        stage('clone repo') {
             steps {
-                script {
-                         def command = """
-                        ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-test.pem' ubuntu@${env.EC2_PUBLIC_DNS} '
-                            sudo docker ps
-                        '
-                    """
-                        // Run the SSH command on the remote host
-                        bat(script:"ssh -i 'C:\\Users\\Rakhi\\Downloads\\sync-web.pem' ubuntu@${env.EC2_PUBLIC_DNS} docker run --name risklab-ui -p 80:80 -d risklab-ui-test", returnStatus: true)
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                    credentialsId: 'risk-aws'
+                ]]) {
+                    script {
+                        def gitCommand = 'git clone https://github.com/sanjayambatkar/risklab-ui.git'
+                        bat script: "aws ssm send-command --document-name 'AWS-RunShellScript' --targets 'Key=instanceids,Values=${env.INSTANCE_ID}' --parameters 'commands=${gitCommand}' --output text", returnStatus: true
+                    }
                 }
             }
         }
+
     }
 }
