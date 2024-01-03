@@ -46,7 +46,7 @@ pipeline {
                     credentialsId: 'risk-aws'
                 ]]) {
                     script {
-                        bat script: 'aws ssm send-command --document-name "AWS-RunShellScript" --document-version "1" --targets "[{\"Key\":\"InstanceIds\",\"Values\":[\"i-002953cac36e74bd0\"]}]" --parameters "commands": ["git clone https://github.com/sanjayambatkar/risklab-ui.git"] --timeout-seconds 600 --max-concurrency "50" --max-errors "0" --region ap-south-1', returnStatus: true
+                        bat script: 'aws ssm send-command --instance-ids "i-002953cac36e74bd0" --region "ap-south-1" --document-name "AWS-RunShellScript" --parameters commands=["cd risklab-ui","git pull"] --output text', returnStatus: true
                     }
                 }
             }
