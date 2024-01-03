@@ -47,7 +47,7 @@ pipeline {
                 ]]) {
                     script {
                         def gitCommand = 'git clone https://github.com/sanjayambatkar/risklab-ui.git'
-                        bat script: "aws ssm send-command --document-name 'AWS-RunShellScript' --targets 'Key=instanceids,Values=${env.INSTANCE_ID}' --parameters 'commands=${gitCommand}' --output text", returnStatus: true
+                        bat script: 'aws ssm send-command --document-name "AWS-RunShellScript" --document-version "1" --targets "[{\"Key\":\"InstanceIds\",\"Values\":[\"i-002953cac36e74bd0\"]}]" --parameters "{\"workingDirectory\":[\"\"],\"executionTimeout\":[\"3600\"],\"commands\":[\"git clone https://github.com/sanjayambatkar/risklab-ui.git\"]}" --timeout-seconds 600 --max-concurrency "50" --max-errors "0" --region ap-south-1', returnStatus: true
                     }
                 }
             }
