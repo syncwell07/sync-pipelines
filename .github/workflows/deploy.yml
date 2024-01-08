@@ -1,9 +1,12 @@
 name: Deploy Docker Image
 
 on:
-  push:
-    branches:
-      - main
+   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name'
+        required: true
+        default: 'main'  # Set your default branch
 
 jobs:
   deploy:
