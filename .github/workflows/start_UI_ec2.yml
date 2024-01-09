@@ -23,3 +23,4 @@ jobs:
           # Start your EC2 instance using the AWS CLI command
           aws ec2 start-instances --region ap-south-1 --instance-ids i-002953cac36e74bd0
           aws ssm send-command --instance-ids "i-002953cac36e74bd0" --region "ap-south-1" --document-name "AWS-RunShellScript" --parameters commands=["echo ${{ secrets.GHCR_PAT }} | docker login ghcr.io -u sanjayambatkar --password-stdin"]
+          aws ssm send-command --instance-ids "i-002953cac36e74bd0" --region "ap-south-1" --document-name "AWS-RunShellScript" --parameters commands=["docker pull ghcr.io/sanjayambatkar/risklab-ui:0.0.1"]
