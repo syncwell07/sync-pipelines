@@ -22,6 +22,10 @@ jobs:
 
           # Start your EC2 instance using the AWS CLI command
           aws ec2 start-instances --region ap-south-1 --instance-ids i-002953cac36e74bd0
-          aws ssm send-command --instance-ids "i-002953cac36e74bd0" --region "ap-south-1" --document-name "AWS-RunShellScript" --parameters commands=["echo ${{ secrets.GHCR_PAT }} | sudo docker login ghcr.io -u sanjayambatkar --password-stdin"]
-          aws ssm send-command --instance-ids "i-002953cac36e74bd0" --region "ap-south-1" --document-name "AWS-RunShellScript" --parameters commands=["sudo docker pull ghcr.io/sanjayambatkar/risklab-ui:0.0.1"]
-          aws ssm send-command --instance-ids "i-002953cac36e74bd0" --region "ap-south-1" --document-name "AWS-RunShellScript" --parameters commands=["sudo docker run -d -p 8080:80 ghcr.io/sanjayambatkar/risklab-ui:0.0.1"]
+          
+      - name: Wait for EC2 Instance to be Ready
+        run: sleep 120  # Adjust the sleep duration as needed
+
+      - name: Get EC2 Instance Public IP
+        id: get-public-ip
+        run: echo "::set-output name=ip::$(aws ec2 describe-instances --region ap-south-1 --instance-ids i-002953cac36e74bd0 --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)"
