@@ -27,5 +27,13 @@ jobs:
         run: sleep 120  # Adjust the sleep duration as needed
 
       - name: Get EC2 Instance Public IP
-        id: get-public-ip
-        run: echo "::set-output name=ip::$(aws ec2 describe-instances --region ap-south-1 --instance-ids i-002953cac36e74bd0 --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)"
+        id: set-ip
+        run: echo "aws ec2 describe-instances --region ap-south-1 --instance-ids i-002953cac36e74bd0 --query 'Reservations[0].Instances[0].PublicIpAddress' --output text" > ip.txt
+
+      - name: Save Environment File
+        run: echo "EC2_PUBLIC_IP=${{ steps.set-ip.outputs.ip }}" > env_file.env
+
+      - name: Use IP in Another Step
+        run: |
+          source env_file.env
+          echo "Using IP: $EC2_PUBLIC_IP"
